@@ -22,4 +22,4 @@ async function connectDB() {
     }
 }
 
-module.exports = {pool,connectDB}
+module.exports = { pool,connectDB }
