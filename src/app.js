@@ -1,5 +1,7 @@
 const express = require("express")
 
+const pool = require("./db/index")
+
 const httpLogger = require("./middleware/httpLogger")
 
 const app = express()
@@ -14,5 +16,13 @@ app.get("/health",(req,res)=>{
         message: "API running"
     })
 })
+
+app.get("/db-test", async (req, res) => {
+  const result = await pool.query(
+    "SELECT NOW()"
+  );
+
+  return res.json(result.rows[0]);
+});
 
 module.exports = app;
