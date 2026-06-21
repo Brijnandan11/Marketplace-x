@@ -1,7 +1,7 @@
 const pino = require("pino");
 
 const logger = pino({
-    level: "info"
+  level: "info",
 });
 
 module.exports = logger;

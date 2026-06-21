@@ -1,5 +1,3 @@
-const js = require("@eslint/js")
+const js = require("@eslint/js");
 
-module.exports = [
-    js.configs.recommended,
-]
+module.exports = [js.configs.recommended];
