@@ -1,14 +1,24 @@
+# Dependencies
 node_modules/
-.env
 
+# Environment
+.env
+.env.local
+
+# Logs
+logs/
+*.log
+
+# Coverage
 coverage/
+
+# Build
 dist/
 build/
 
-.logs
-*.log
-
+# Editors
 .vscode/
 .idea/
 
+# OS Files
 .DS_Store
