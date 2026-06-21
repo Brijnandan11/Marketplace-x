@@ -8,7 +8,9 @@
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
     "lint": "eslint .",
-    "format": "prettier . --write"
+    "format": "prettier . --write",
+    "prepare": "husky",
+    "test": "echo \"No test yet\""
   },
   "repository": {
     "type": "git",
