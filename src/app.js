@@ -10,7 +10,7 @@ app.use(httpLogger)
 
 app.use(express.json())
 
-app.get("/health",(req,res)=>{
+app.get("/health", (req, res) => {
     return res.status(200).json({
         success: true,
         message: "API running"
@@ -18,11 +18,11 @@ app.get("/health",(req,res)=>{
 })
 
 app.get("/db-test", async (req, res) => {
-  const result = await pool.query(
-    "SELECT NOW()"
-  );
+    const result = await pool.query(
+        "SELECT NOW()"
+    );
 
-  return res.json(result.rows[0]);
+    return res.json(result.rows[0]);
 });
 
 module.exports = app;
