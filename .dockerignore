@@ -11,3 +11,7 @@ logs
 .vscode
 
 .idea
+
+tests
+
+README.md
