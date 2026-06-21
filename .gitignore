@@ -24,3 +24,5 @@ build/
 .DS_Store
 
 database/backups/
+
+pg_dump
