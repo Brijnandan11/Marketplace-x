@@ -4,6 +4,10 @@ const authRepository = require("./auth.repository");
 
 const logger = require("../../config/logger");
 
+const jwt = require("jsonwebtoken");
+
+const env = require("../../config/env");
+
 async function registerUser(data) {
   logger.info(
     {
@@ -45,6 +49,70 @@ async function registerUser(data) {
   return user;
 }
 
+async function loginUser(data) {
+  logger.info(
+    {
+      email: data.email,
+    },
+    "Login attempt",
+  );
+
+  const user = await authRepository.findUserByEmail(data.email);
+
+  if (!user) {
+    logger.warn(
+      {
+        email: data.email,
+      },
+      "User not found :- email does not exist",
+    );
+
+    throw new Error("Invalid email address or password");
+  }
+
+  const isPasswordValid = await bcrypt.compare(data.password, user.password);
+
+  if (!isPasswordValid) {
+    logger.warn(
+      {
+        email: data.email,
+      },
+      "Invalid password",
+    );
+
+    throw new Error("Invalid email or password");
+  }
+
+  const token = jwt.sign(
+    {
+      userId: user.id,
+      role: user.role,
+    },
+    env.jwtSecret,
+    {
+      expiresIn: env.jwtExpiresIn,
+    },
+  );
+
+  logger.info(
+    {
+      userId: user.id,
+    },
+    "User logged in successfully",
+  );
+
+  return {
+    token,
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    },
+  };
+}
+
 module.exports = {
   registerUser,
+  loginUser,
 };
