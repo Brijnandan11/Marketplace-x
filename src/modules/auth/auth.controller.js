@@ -2,9 +2,20 @@ const authService = require("./auth.service");
 
 const logger = require("../../config/logger");
 
+const { registerSchema } = require("./auth.validation");
+
 async function register(req, res) {
   try {
-    const user = await authService.registerUser(req.body);
+    const validatedData = registerSchema.safeParse(req.body);
+
+    if (!validatedData.success) {
+      return res.status(400).json({
+        success: false,
+        errors: validatedData.error.issues,
+      });
+    }
+
+    const user = await authService.registerUser(validatedData.data);
 
     return res.status(201).json({
       success: true,
