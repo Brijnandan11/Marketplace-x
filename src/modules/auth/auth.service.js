@@ -33,6 +33,15 @@ async function registerUser(data) {
     password: hashedPassword,
     role: "CUSTOMER",
   });
+
+  logger.info(
+    {
+      userId: user.id,
+      email: user.email,
+    },
+    "User registered successfully",
+  );
+
   return user;
 }
 
