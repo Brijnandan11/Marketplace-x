@@ -2,7 +2,7 @@ const authService = require("./auth.service");
 
 const logger = require("../../config/logger");
 
-const { registerSchema } = require("./auth.validation");
+const { registerSchema, loginSchema } = require("./auth.validation");
 
 async function register(req, res) {
   try {
@@ -37,6 +37,33 @@ async function register(req, res) {
   }
 }
 
+async function login(req, res) {
+  try {
+    const validatedData = loginSchema(req.body);
+
+    const result = authService.loginUser(validatedData);
+
+    return res.status(200).json({
+      success: true,
+      message: "Login successfully",
+      data: result,
+    });
+  } catch (error) {
+    logger.error(
+      {
+        error: error.message,
+      },
+      "Login failed",
+    );
+
+    return res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
+
 module.exports = {
   register,
+  login,
 };
