@@ -56,7 +56,12 @@ async function loginUser(data) {
     },
     "Login attempt",
   );
-
+  logger.info(
+    {
+      email: data.email,
+    },
+    "EMAIL RECEIVED FOR LOGIN",
+  );
   const user = await authRepository.findUserByEmail(data.email);
 
   if (!user) {

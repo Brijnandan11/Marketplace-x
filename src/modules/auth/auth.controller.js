@@ -39,9 +39,16 @@ async function register(req, res) {
 
 async function login(req, res) {
   try {
-    const validatedData = loginSchema(req.body);
+    const validatedData = loginSchema.safeParse(req.body);
 
-    const result = authService.loginUser(validatedData);
+    if (!validatedData.success) {
+      return res.status(400).json({
+        success: false,
+        errors: validatedData.error.issues,
+      });
+    }
+    console.log(validatedData);
+    const result = await authService.loginUser(validatedData.data);
 
     return res.status(200).json({
       success: true,
