@@ -3,7 +3,7 @@ const logger = require("../config/logger");
 function authorize(...roles) {
   return (req, res, next) => {
     try {
-      const userRole = req.user.roles;
+      const userRole = req.user.role;
 
       if (!roles.includes(userRole)) {
         logger.warn(

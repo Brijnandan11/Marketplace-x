@@ -30,7 +30,7 @@ function authenticate(req, res, next) {
 
     logger.info(
       {
-        userId: decoded.id,
+        userId: decoded.userId,
         role: decoded.role,
       },
       "User authenticated successfully",
