@@ -9,7 +9,7 @@ const createVendorSchema = z.object({
       /^[a-z0-9-]+$/,
       "Slug can only contain lowercase letters, numbers and hyphens",
     ),
-  description: z.string().max(300).optional(),
+  description: z.string().max(500).optional(),
 });
 
 module.exports = {
