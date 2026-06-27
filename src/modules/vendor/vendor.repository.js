@@ -21,14 +21,14 @@ async function createVendor(data) {
 
     await client.query(
       `INSERT INTO vendor_users (vendor_id, user_id) VALUES ($1, $2) `,
-      [vendor.id, data.id],
+      [vendor.id, data.userId],
     );
 
     await client.query("COMMIT");
 
     return vendor;
   } catch (error) {
-    await client.query("ROOLBACK");
+    await client.query("ROLLBACK");
     throw error;
   } finally {
     client.release();

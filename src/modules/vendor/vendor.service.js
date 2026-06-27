@@ -30,4 +30,6 @@ async function createVendor(data) {
   return vendor;
 }
 
-module.exports = createVendor;
+module.exports = {
+  createVendor,
+};
