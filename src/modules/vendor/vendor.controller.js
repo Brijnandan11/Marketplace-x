@@ -2,7 +2,10 @@ const logger = require("../../config/logger");
 
 const vendorService = require("./vendor.service");
 
-const { createVendorSchema } = require("./vendor.validation");
+const {
+  createVendorSchema,
+  updateVendorStatusSchema,
+} = require("./vendor.validation");
 
 async function createVendor(req, res) {
   try {
@@ -42,6 +45,44 @@ async function createVendor(req, res) {
   }
 }
 
+async function updateVendorStatus(req, res) {
+  try {
+    const validatedData = updateVendorStatusSchema.safeParse(req.body);
+
+    const vendor = await vendorService.updateVendorStatus({
+      vendorId: req.params.id,
+      status: validatedData.status,
+      adminId: req.user.userId,
+    });
+
+    logger.info(
+      {
+        vendorId: vendor.id,
+      },
+      "Vendor status updated",
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Vendor data updated successfully",
+      data: vendor,
+    });
+  } catch (error) {
+    logger.error(
+      {
+        error: error.message,
+      },
+      "Vendor status update failed",
+    );
+
+    return res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
+
 module.exports = {
   createVendor,
+  updateVendorStatus,
 };
