@@ -12,6 +12,11 @@ const createVendorSchema = z.object({
   description: z.string().max(500).optional(),
 });
 
+const updateVendorStatusSchema = z.object({
+  status: z.enum(["PENDING", "APPROVED", "REJECT", "SUSPEND"]),
+});
+
 module.exports = {
   createVendorSchema,
+  updateVendorStatusSchema,
 };
