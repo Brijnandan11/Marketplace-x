@@ -35,7 +35,13 @@ async function createVendor(data) {
   }
 }
 
+async function findVendorById(id) {
+  const result = await pool.query(`SELECT * FROM vendors WHERE id = $1`, [id]);
+  return result.rows[0];
+}
+
 module.exports = {
   findVendorBySlug,
   createVendor,
+  findVendorById,
 };
