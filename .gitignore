@@ -25,4 +25,6 @@ build/
 
 database/backups/
 
+.env.docker
+
 pg_dump
