@@ -40,8 +40,17 @@ async function findVendorById(id) {
   return result.rows[0];
 }
 
+async function updateVendorStatus(status, id) {
+  const result = await pool.query(
+    ` UPDATE vendors SET status = $1, updated_at = NOW() WHERE id = $2 RETURNING * `,
+    [status, id],
+  );
+  return result.rows[0];
+}
+
 module.exports = {
   findVendorBySlug,
   createVendor,
   findVendorById,
+  updateVendorStatus,
 };
