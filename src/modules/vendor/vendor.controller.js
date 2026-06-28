@@ -49,9 +49,16 @@ async function updateVendorStatus(req, res) {
   try {
     const validatedData = updateVendorStatusSchema.safeParse(req.body);
 
+    if (!validatedData.success) {
+      return res.status(400).json({
+        success: false,
+        errors: validatedData.error.issues,
+      });
+    }
+
     const vendor = await vendorService.updateVendorStatus({
       vendorId: req.params.id,
-      status: validatedData.status,
+      status: validatedData.data.status,
       adminId: req.user.userId,
     });
 

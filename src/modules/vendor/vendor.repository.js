@@ -20,8 +20,8 @@ async function createVendor(data) {
     const vendor = vendorResult.rows[0];
 
     await client.query(
-      `INSERT INTO vendor_users (vendor_id, user_id) VALUES ($1, $2) `,
-      [vendor.id, data.userId],
+      `INSERT INTO vendor_users (vendor_id, user_id, role) VALUES ($1, $2, $3) `,
+      [vendor.id, data.userId, "OWNER"],
     );
 
     await client.query("COMMIT");
@@ -40,7 +40,7 @@ async function findVendorById(id) {
   return result.rows[0];
 }
 
-async function updateVendorStatus(status, id) {
+async function updateVendorStatus(id, status) {
   const result = await pool.query(
     ` UPDATE vendors SET status = $1, updated_at = NOW() WHERE id = $2 RETURNING * `,
     [status, id],

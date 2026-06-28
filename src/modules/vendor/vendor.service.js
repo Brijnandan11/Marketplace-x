@@ -31,11 +31,15 @@ async function createVendor(data) {
 }
 
 async function updateVendorStatus(data) {
-  logger.info({
-    vendorId: data.vendorId,
-    status: data.status,
-    adminId: data.adminId,
-  });
+  logger.info(
+    {
+      vendorId: data.vendorId,
+      status: data.status,
+      adminId: data.adminId,
+    },
+    "Vendor status update started",
+  );
+
   const vendor = await vendorRepository.findVendorById(data.vendorId);
 
   if (!vendor) {
@@ -43,27 +47,51 @@ async function updateVendorStatus(data) {
       {
         vendorId: data.vendorId,
       },
-      "Vendor does not found",
+      "Vendor not found",
     );
 
-    throw new Error("Vendor did not found");
+    throw new Error("Vendor not found");
   }
 
-  const updatedVendorStatus = await vendorRepository.updateVendorStatus(
+  const validTransitions = {
+    PENDING: ["APPROVED", "REJECTED"],
+    APPROVED: ["SUSPENDED"],
+    SUSPENDED: ["APPROVED"],
+    REJECTED: [],
+  };
+
+  const allowedTransitions = validTransitions[vendor.status];
+
+  if (!allowedTransitions.includes(data.status)) {
+    logger.warn(
+      {
+        vendorId: vendor.id,
+        currentStatus: vendor.status,
+        requestedStatus: data.status,
+      },
+      "Invalid vendor status transition",
+    );
+
+    throw new Error(
+      `Cannot change vendor status from ${vendor.status} to ${data.status}`,
+    );
+  }
+
+  const updatedVendor = await vendorRepository.updateVendorStatus(
     data.vendorId,
     data.status,
   );
 
   logger.info(
     {
-      vendorId: data.vendorId,
-      status: data.status,
+      vendorId: updatedVendor.id,
+      status: updatedVendor.status,
       adminId: data.adminId,
     },
     "Vendor status updated successfully",
   );
 
-  return updatedVendorStatus;
+  return updatedVendor;
 }
 
 module.exports = {
