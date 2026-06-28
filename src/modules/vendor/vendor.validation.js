@@ -13,7 +13,7 @@ const createVendorSchema = z.object({
 });
 
 const updateVendorStatusSchema = z.object({
-  status: z.enum(["PENDING", "APPROVED", "REJECT", "SUSPEND"]),
+  status: z.enum(["PENDING", "APPROVED", "REJECT", "SUSPENDED"]),
 });
 
 module.exports = {
